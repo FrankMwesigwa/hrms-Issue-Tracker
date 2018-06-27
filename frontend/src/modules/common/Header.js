@@ -1,16 +1,22 @@
 import React, {Component} from 'react';
 import { connect } from "react-redux"
 import { Link } from 'react-router-dom';
-import { logout } from "../../actions/loginActions";
+import { doLogout } from "../../actions/loginActions";
 
 class Header extends Component {
 
-  logout = () => { 
-  	this.props.logout();
+  doLogout() { 
+  	this.props.doLogout();
   }
 
   render() {
-    const { account } = this.props;
+    const { userData, loading } = this.props;
+    
+    if (loading) {
+      return <div className="info-message">
+          <p>Loading...</p>
+      </div>
+  }
     return (
 
   <header class="main-header">
@@ -72,7 +78,7 @@ class Header extends Component {
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               
               <img src="dist/img/user2-160x160.jpg" class="user-image" alt="User Image"/>
-              <span class="hidden-xs">{account.username}</span>
+              <span class="hidden-xs">{userData.username}</span>
             </a>
             <ul class="dropdown-menu">
               
@@ -81,7 +87,7 @@ class Header extends Component {
                   <a href="#" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
-                  <button className="btn btn-default btn-flat" onClick={this.logout.bind(this)} >Logout</button>
+                  <button className="btn btn-default btn-flat" onClick={this.doLogout.bind(this)} >Logout</button>
                 </div>
               </li>
             </ul>
@@ -101,8 +107,9 @@ class Header extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    account: state.auth.account,
+    userData: state.login.userData,
+    loading: state.login.loading
   }
 }
 
-export default connect ( mapStateToProps , { logout } )(Header);
+export default connect ( mapStateToProps , { doLogout } )(Header);

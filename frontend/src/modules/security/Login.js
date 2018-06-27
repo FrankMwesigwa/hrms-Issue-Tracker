@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';  
 import { Field, reduxForm } from 'redux-form';
-import { login } from "../../actions/loginActions";
+import { doLogin } from "../../actions/loginActions";
 
 const form = reduxForm({  
   form: 'login'
@@ -9,15 +9,15 @@ const form = reduxForm({
 
 class Login extends Component {
 
-  loginSubmit = (values) => {
-    this.props.login(values);
+  loginSubmit({ username,password }) {
+    this.props.doLogin({ username,password });
   }
 
   errorMessage() {
     if (this.props.errorMessage) {
       return (
-        <div className="info-red">
-          {this.props.errorMessage}
+        <div className="error-message">
+          <p>{this.props.errorMessage}</p>
         </div>
       );
     }
@@ -35,7 +35,9 @@ class Login extends Component {
       <div class="login-box-body">
         <p class="login-box-msg">Sign in to start your session</p>
         <form onSubmit={handleSubmit(this.loginSubmit.bind(this))}>
+
         {this.errorMessage()}
+        
           <div class="form-group has-feedback">
             <Field name="username" className="form-control" component="input" type="text" placeholder="Username"/>
             <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
@@ -60,13 +62,7 @@ class Login extends Component {
           </div>
         </form>
 
-        <div class="social-auth-links text-center">
-      <p>- OR -</p>
-      <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i> Sign in using
-        Facebook</a>
-      <a href="#" class="btn btn-block btn-social btn-google btn-flat"><i class="fa fa-google-plus"></i> Sign in using
-        Google+</a>
-    </div>
+       
 
     <a href="#">I forgot my password</a><br/>
     <a href="register.html" class="text-center">Register a new membership</a>
@@ -79,7 +75,10 @@ class Login extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { errorMessage: state.auth.error };
+  return { 
+    errorMessage: state.login.error 
+  };
 }
 
-export default connect(mapStateToProps, { login })(form(Login)); 
+
+export default connect(mapStateToProps, { doLogin })(form(Login)); 

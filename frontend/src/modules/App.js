@@ -9,75 +9,80 @@ import SideBar from './common/SideBar';
 import Dashboard from './common/Dashboard';
 import AddUser from './users/AddUser';
 
-import BatchList from './batch/BatchList';
-
 import Login from './security/Login';
 
 class App extends Component {
   
   componentWillMount() {    
-    this.props.isAuthenticated()      
+    this.props.dispatch(isAuthenticated())       
   }
 
   componentWillReceiveProps(nextProps) {
-    if(nextProps.authenticated) {
-      this.props.isAuthenticated()       
+    if(nextProps.authenticated && nextProps.userData === null) {
+      this.props.dispatch(isAuthenticated())        
     }      
   }
-
   render() {
-    const { authenticated, account } = this.props;   
+    const { authenticated, loginFailed, userData, loading } = this.props; 
+    
 
     let html;
     if (authenticated) {
-      html = (    
-          
-        <div class="wrapper">
+      html = (      
+        <div class="container-scroller">
           <Header />
-          <aside class="main-sidebar">
-            <SideBar />
-          </aside>
+      <div class="container-fluid page-body-wrapper">
+          <SideBar />
+          <div class="main-panel">
           <div class="content-wrapper">
             <Switch>
               <Route path="/home" exact component={Dashboard}/>
-              <Route path="/user" name="adduser" component={AddUser}/>
-              <Route path="/batchlist" name="batchlist" component={BatchList}/>
+              <Route path="/user" name="Users" component={AddUser}/>
               <Redirect from="/" to="/home"/>
             </Switch>
           </div>
-          
 
-   <footer class="main-footer">
-    <div class="pull-right hidden-xs">
-      <b>Version</b> 1.1.0
-    </div>
-    <strong>Copyright &copy; 2018 <a href="">Housing Finance Bank</a>.</strong> All rights
-    reserved.
-  </footer> 
-     
+            <footer class="footer">
+          <div class="container-fluid clearfix">
+            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2018 <a href="http://mapproject.se/" target="_blank">Map Project</a>. All rights reserved.</span>
+          </div>
+        </footer>
+
+      </div>     
+      </div>
       </div>
       )
     } else {
+
+    if (loginFailed) {
+        html = (
+          <div>
+            
+                <strong>Something went wrong.</strong>
+           
+           <Login /> 
+           </div>
+        )
+     } else {
       html = (
         <Login />
       )
-
+     }
+      
     }
     
     return (
-      <body class="hold-transition skin-blue sidebar-mini">
-          { html }
-      </body>
-      
+      <div>{ html }</div>
     );
   }
 }
 
 const mapStateToProps = (state) => {
   return {
-    authenticated: state.auth.authenticated,
-    account: state.auth.account,
+    authenticated: state.login.authenticated,
+    loginFailed: state.login.failed,
+    userData: state.login.userData
   }
 }
 
-export default connect ( mapStateToProps , { isAuthenticated } )(App);
+export default connect ( mapStateToProps )(App);

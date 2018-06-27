@@ -5,7 +5,13 @@ import { Link } from 'react-router-dom';
 class SideBar extends Component {
 
   render() {
-    const { account } = this.props;
+    const { userData, loading } = this.props;
+    
+    if (loading) {
+      return <div className="info-message">
+          <p>Loading...</p>
+      </div>
+  }
     return (
 
       <section class="sidebar">
@@ -14,7 +20,7 @@ class SideBar extends Component {
           <img src="dist/img/user2-160x160.jpg" class="img-circle" alt="User Image"/>
         </div>
         <div class="pull-left info">
-          <p>{account.username}</p>
+          <p>{userData.username}</p>
           <a href=""><i class="fa fa-circle text-success"></i> Online</a>
         </div>
       </div>
@@ -90,7 +96,8 @@ class SideBar extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    account: state.auth.account
+    userData: state.login.userData,
+    loading: state.login.loading
   }
 }
 
