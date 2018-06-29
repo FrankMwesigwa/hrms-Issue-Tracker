@@ -1,11 +1,9 @@
 import React, {Component} from 'react';
-import { connect } from "react-redux"
 
 class Dashboard extends Component {
 
 
   render() {
-
     return (
       <div>
 
@@ -90,4 +88,5 @@ class Dashboard extends Component {
 }
 
 
-export default connect ( null )(Dashboard);
+
+export default Dashboard;

@@ -1,142 +1,130 @@
 import React, {Component} from 'react';
-import { Link } from 'react-router-dom';
+import {Field, FieldArray, reduxForm} from 'redux-form';
+import {connect} from 'react-redux'
+import { addUser, getRoles, getBranches } from '../../actions/userActions';
 
 class AddUser extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+        roles: []
+    };
+  }
+
+  submit = (values) => {
+    this.props.dispatch(addUser(values, this.props.history));
+}
+
+componentDidMount() {
+  this.props.dispatch(getBranches());
+  this.props.dispatch(getRoles());
+}
+
+errorMessage() {
+    if (this.props.errorMessage) {
+        return (
+            <div className="error-message">
+                <p>{this.props.errorMessage}</p>
+            </div>
+        );
+    }
+}
 
   render() {
+    const {handleSubmit, pristine, reset, submitting ,loading, roles, branches } = this.props;
+
+  if (loading) {
+      return <div className="info-message">
+          <p>Loading...</p>
+      </div>;
+    }
+    
     return (
-        <div>
+      <div>
 
-        <div class="row purchace-popup">
-            <div class="col-8">
-              <span class="d-flex alifn-items-center">
-                <h6>User Management</h6>
-              </span>
+    <section class="content-header">
+      <h1>User Management</h1>
+      <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> batch</a></li>
+        <li class="active">new batch</li>
+      </ol>
+    </section>
+
+  <section class="content container-fluid">
+  <div class="box box-warning">
+                <div class="box-header with-border">
+                  <h3 class="box-title">Create New User</h3>
+                </div>
+                <div class="box-body">
+                <form onSubmit={handleSubmit(this.submit.bind(this))}>
+
+                    <div class="form-group">
+                      <label>User Name</label>
+                      <Field name="username" component="input" type="text" placeholder="Enter User Name" class="form-control"/>
+                      
+                    </div>
+                    
+                    <div class="form-group">
+                      <label>Password</label>
+                      <Field name="password" component="input" type="password" placeholder="Enter Password" class="form-control"/>
+                    </div>
+
+                    <div class="form-group">
+                      <label>First Name</label>
+                      <Field name="firstName" component="input" type="text" placeholder="Enter First Name" class="form-control"/>
+                      
+                    </div>
+                    
+                    <div class="form-group">
+                      <label>Last Name</label>
+                      <Field name="lastName" component="input" type="textarea" placeholder="Enter Last Name" class="form-control"/>
+                    </div>
+
+                    <div class="form-group">
+                      <label>Email</label>
+                      <Field name="email" component="input" type="textarea" placeholder="Enter Email" class="form-control"/>
+                    </div>
+
+                    <div class="form-group"><label>Branch</label>
+                      <div>
+                        <Field name="branchId" component="select" class="form-control" >
+                          {branches.map(branch => <option value={branch.id} key={branch.id}>{branch.name}</option>)}
+                        </Field>
+					            </div>	
+    			          </div>
+
+                    <div class="form-group"><label>User Roles</label>
+                      <div>
+                          <select multiple className="form-control" name="roles">
+                              {roles.map(role => <option value={role.id} key={role.id}>{role.roleName}</option>)}
+                          </select>
+					            </div>	
+    			          </div>
+                    
+					          <div class="box-footer">
+                      <button type="submit" disabled={submitting} class="btn btn-primary">Add User</button>
+                      <button type="button" disabled={pristine || submitting} onClick={reset} class="btn btn-primary">Clear User</button>
+	                  </div>
+                  </form>
+                </div>
             </div>
-        </div>
 
-      <div class="row">
-      <div class="col-12 grid-margin">
-        <div class="card">
-          <div class="card-body">
-            <form class="form-sample">
-              <h5 class="card-description">Personal info</h5>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">First Name</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Last Name</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Gender</label>
-                    <div class="col-sm-9">
-                      <select class="form-control" >
-                        <option>Male</option>
-                        <option>Female</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Date of Birth</label>
-                    <div class="col-sm-9">
-                      <input class="form-control" placeholder="dd/mm/yyyy" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <h5 class="card-description">Address info</h5>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Address 1</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">State</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Address 2</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Postcode</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">City</label>
-                    <div class="col-sm-9">
-                      <input type="text" class="form-control" />
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-6">
-                  <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Country</label>
-                    <div class="col-sm-9">
-                      <select class="form-control" >
-                        <option>Sweden</option>
-                        <option>Italy</option>
-                        <option>Russia</option>
-                        <option>Britain</option>
-                        <option>Uganda</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <button type="submit" class="btn btn-success mr-2" >Submit</button>
-              <button class="btn btn-light"><Link to={'/'}>Cancel</Link></button>
-            </form>
-          </div>
-        </div>
-      </div>
-
-  </div>
-  </div>
-  
+  </section>
+</div>
     )
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    loading: state.users.loading,
+    branches: state.users.branches,
+    roles: state.users.roles,
+    errorMessage: state.users.error,
+    addUser: state.users.addUser
+    };
+}
 
-
-export default AddUser;
+const formAddUser = reduxForm({form: 'addUser'})(AddUser);
+export default connect(mapStateToProps)(formAddUser);

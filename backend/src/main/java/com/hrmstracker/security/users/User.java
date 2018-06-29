@@ -1,6 +1,7 @@
 package com.hrmstracker.security.users;
 
 import com.hrmstracker.security.roles.Role;
+import com.hrmstracker.web.branch.Branch;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -21,11 +22,15 @@ public class User  {
     private String lastName;
     private String email;
 
-    @ManyToMany
+    @ManyToOne
+    @JoinColumn(name = "branch_id", referencedColumnName = "id")
+    private Branch branch;
+
+    @ManyToMany(cascade=CascadeType.MERGE)
     @JoinTable(
             name = "user_roles",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "role_id", referencedColumnName = "id")})
-    private Set<Role> userRoles ;
+    private Set<Role> roles ;
 
 }

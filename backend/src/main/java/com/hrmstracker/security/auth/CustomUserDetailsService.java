@@ -34,7 +34,7 @@ public class CustomUserDetailsService implements org.springframework.security.co
     }
 
     private List<GrantedAuthority> createGrantedAuthorities(User user) {
-        return user.getUserRoles()
+        return user.getRoles()
                 .stream()
                 .map(Role::getRoleName)
                 .map(SimpleGrantedAuthority::new)

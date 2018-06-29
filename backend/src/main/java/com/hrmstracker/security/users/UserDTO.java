@@ -14,7 +14,10 @@ public class UserDTO  {
     private String firstName;
     private String lastName;
     private String email;
-    private Set<Long> userRoles;
+    private Long branchId;
+    private String branchName;
+    private Set<Long> roles;
+    private Set<String> roleName;
 
     public UserDTO(){}
 
@@ -26,11 +29,15 @@ public class UserDTO  {
                 user.getFirstName(),
                 user.getLastName(),
                 user.getEmail(),
-                user.getUserRoles().stream().map(Role::getId).collect(Collectors.toSet()));
+                user.getBranch().getId(),
+                user.getBranch().getName(),
+                user.getRoles().stream().map(Role::getId).collect(Collectors.toSet()),
+                user.getRoles().stream().map(Role::getRoleName).collect(Collectors.toSet())
+                );
     }
 
     public UserDTO(Long id, String username, String password, String firstName, String lastName,
-                   String email, Set<Long> userRoles) {
+                   String email, Long branchId, String branchName, Set<Long> roles, Set<String> roleName) {
 
         this.id = id;
         this.username = username;
@@ -38,7 +45,10 @@ public class UserDTO  {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.userRoles = userRoles;
+        this.branchId = branchId;
+        this.branchName = branchName;
+        this.roles = roles;
+        this.roleName = roleName;
     }
 
 }

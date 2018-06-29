@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux"
 import { Switch, Route, Redirect } from 'react-router-dom';
-
 import { isAuthenticated } from "../actions/loginActions";
 
 import Header from './common/Header';
 import SideBar from './common/SideBar';
 import Dashboard from './common/Dashboard';
+
 import AddUser from './users/AddUser';
+import UsersList from './users/UsersList';
+
+import AddBatch from './batch/AddBatch';
+import BatchList from './batch/BatchList';
 
 import Login from './security/Login';
 
@@ -29,47 +33,41 @@ class App extends Component {
     let html;
     if (authenticated) {
       html = (      
-        <div class="container-scroller">
+        <body class="hold-transition skin-blue sidebar-mini">
+        <div class="wrapper">
           <Header />
-      <div class="container-fluid page-body-wrapper">
           <SideBar />
-          <div class="main-panel">
+          
           <div class="content-wrapper">
             <Switch>
               <Route path="/home" exact component={Dashboard}/>
               <Route path="/user" name="Users" component={AddUser}/>
+              <Route path="/users" name="Users" component={UsersList}/>
+              <Route path="/batch" name="batch" component={AddBatch}/>
+              <Route path="/batches" name="batches" component={BatchList}/>
               <Redirect from="/" to="/home"/>
             </Switch>
           </div>
-
-            <footer class="footer">
-          <div class="container-fluid clearfix">
-            <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © 2018 <a href="http://mapproject.se/" target="_blank">Map Project</a>. All rights reserved.</span>
-          </div>
-        </footer>
-
-      </div>     
-      </div>
-      </div>
+    
+          <footer class="main-footer">
+            <div class="pull-right hidden-xs">
+              <b>Version</b> 1.1.0
+            </div>
+              <strong>Copyright &copy; 2018 <a href="">Housing Finance Bank</a>.</strong> All rights reserved.
+          </footer> 
+ 
+        </div>
+      </body>
       )
-    } else {
+    } 
 
-    if (loginFailed) {
-        html = (
-          <div>
-            
-                <strong>Something went wrong.</strong>
-           
-           <Login /> 
-           </div>
-        )
-     } else {
+     else {
       html = (
         <Login />
       )
      }
       
-    }
+    
     
     return (
       <div>{ html }</div>
