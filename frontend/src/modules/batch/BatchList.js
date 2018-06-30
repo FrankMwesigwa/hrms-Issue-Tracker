@@ -62,9 +62,10 @@ class BatchList extends Component {
 							<tr>
 								<th>Id</th>
                 <th>Name</th>
-								<th>Description</th>
-                <th>Batch Status</th>
-                <th>Tracker Status</th>
+								<th>Comments</th>
+                <th>Created On</th>
+                <th>Status</th>
+                <th>Created By</th>
 							</tr>
 							</thead>
 							<tbody> 
@@ -73,10 +74,11 @@ class BatchList extends Component {
                         <tr key={batch.id}>
                           <td>{batch.id}</td>
                           <td>{batch.name}</td>
-                          <td>{batch.description}</td>
-                          <td>{batch.batchStatus}</td>
+                          <td>{batch.comments}</td>
+                          <td>{batch.createdOn}</td>
                           <td>{batch.statusName}</td>
-                          <td><Link class="btn btn-sm btn-default" to={`/batch/${batch.id}`}><i class="fa fa-edit"></i>View Details</Link>
+                          <td>{batch.createdBy}</td>
+                          <td><Link class="btn btn-sm btn-default" to={`/show/${batch.id}`}><i class="fa fa-edit"></i>View Details</Link>
                           </td>
                         </tr>
                         ))

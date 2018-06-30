@@ -36,7 +36,7 @@ class SideBar extends Component {
           <a href="#"><i class="fa fa-pie-chart"></i> <span>Batch</span></a>
           <ul class="treeview-menu">
             <li><Link to="/batches"><i className="fa fa-circle-o"></i>Batch Management</Link></li>
-            <li><a href="#"><i class="fa fa-circle-o"></i>Batch Reports</a></li>
+            <li><Link to="/batch/test"><i className="fa fa-circle-o"></i>Batch React</Link></li>
           </ul>
         </li>
 

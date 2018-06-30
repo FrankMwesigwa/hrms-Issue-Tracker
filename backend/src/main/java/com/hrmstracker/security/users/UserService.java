@@ -7,6 +7,8 @@ import com.hrmstracker.web.branch.BranchRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,7 +37,13 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public User getUserWithAuthorities() {
-        return userRepository.findByUsername(SecurityUtils.getCurrentUserLogin()).orElse(null);
+        return userRepository.findByUsername(SecurityUtils.getCurrentUserLogin());
+    }
+
+    public User getLoggedUser() {
+        UserDetails userDetails = UserDetails.class.cast(SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+        String username = userDetails.getUsername();
+        return userRepository.findByUsername(username);
     }
 
     public User createUser(UserDTO userDTO) {

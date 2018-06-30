@@ -40,7 +40,7 @@ export const addBatch = (values, history) => {
         })
             .then( response => {
                dispatch({type: "ADD_BATCH"})
-               history.push('/batch');
+               history.push(`${URL}/batches`);
             } )
             .catch( error => {
                 dispatch({type: "FAILED_BATCH", payload: error})
@@ -55,6 +55,21 @@ export const getStatus = () => {
         })
             .then( response => {
                dispatch({type: "FETCH_STATUS", payload: response.data})
+            } )
+            .catch( error => {
+                dispatch({type: "FAILED_BATCH", payload: error})
+            } );
+    };
+};
+
+export const getTrans = (id) => {
+    return dispatch => {
+        dispatch({type: "IS_LOADING"});
+        axios.get(`${URL}/trans/${id}`, {
+            headers: {"Authorization": 'Bearer ' + localStorage.getItem( "token") }
+        })
+            .then( response => {
+               dispatch({type: "FETCH_TRANS", payload: response.data})
             } )
             .catch( error => {
                 dispatch({type: "FAILED_BATCH", payload: error})

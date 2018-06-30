@@ -1,9 +1,11 @@
 package com.hrmstracker.web.tran;
 
+import com.hrmstracker.security.users.User;
+
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -14,8 +16,7 @@ public class Tran {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date createdDate;
-    private String createdBy;
+    private LocalDateTime createdOn;
     private String comments;
 
     @Column(name="batch_id")
@@ -23,4 +24,8 @@ public class Tran {
 
     @Column(name="status_id")
     private Long statusId;
+
+    @ManyToOne
+    @JoinColumn(name = "created_By", referencedColumnName = "id")
+    private User createdBy;
 }

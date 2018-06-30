@@ -114,8 +114,8 @@ errorMessage() {
                     </div>
                     
                     <div class="form-group">
-                      <label>Batch Description</label>
-                      <Field name="description" component="input" type="textarea" placeholder="Enter Batch Description" class="form-control"/>
+                      <label>Comments</label>
+                      <Field name="comments" component="input" type="textarea" placeholder="Enter Batch Description" class="form-control"/>
                     </div>
 
           <div class="form-group"><label>Status</label>

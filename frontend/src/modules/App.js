@@ -12,6 +12,9 @@ import UsersList from './users/UsersList';
 
 import AddBatch from './batch/AddBatch';
 import BatchList from './batch/BatchList';
+import EditBatch from './batch/EditBatch';
+import BatchTest from './batch/BatchTest';
+import BatchDetails from './batch/BatchDetails';
 
 import Login from './security/Login';
 
@@ -41,10 +44,13 @@ class App extends Component {
           <div class="content-wrapper">
             <Switch>
               <Route path="/home" exact component={Dashboard}/>
-              <Route path="/user" name="Users" component={AddUser}/>
-              <Route path="/users" name="Users" component={UsersList}/>
-              <Route path="/batch" name="batch" component={AddBatch}/>
-              <Route path="/batches" name="batches" component={BatchList}/>
+              <Route path="/user"  exact component={AddUser}/>
+              <Route path="/users"  exact component={UsersList}/>
+              <Route path="/batch"  exact component={AddBatch}/>
+              <Route path="/batches"  exact component={BatchList}/>
+              <Route path="/show/:id"  exact component={EditBatch}/>
+              <Route path="/batch/test"  exact component={BatchTest}/>
+              <Route path='/batch/:id' exact component={BatchDetails} />
               <Redirect from="/" to="/home"/>
             </Switch>
           </div>

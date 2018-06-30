@@ -1,5 +1,7 @@
 const initialState = {
     batches: [],
+    batch: {},
+    trans: [],
     status: [],
     addbatch:null,
     loading: false,
@@ -25,6 +27,9 @@ export default function (state = initialState, action) {
       }
       case "FETCH_STATUS": {
         return {...state, loading : false, status : action.payload};
+      }
+      case "FETCH_TRANS": {
+        return {...state, loading : false, trans : action.payload};
       }
           
     }
