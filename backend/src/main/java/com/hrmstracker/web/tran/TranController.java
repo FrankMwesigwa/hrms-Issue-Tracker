@@ -16,11 +16,11 @@ public class TranController {
         this.tranRepository = tranRepository;
     }
 
-    @GetMapping("/trans/")
+    /*@GetMapping("/trans/")
     public ResponseEntity<List<TranDTO>> getTranById(@RequestParam Long batch_id) {
         List<TranDTO> tranList = tranRepository.findTranByBatchId(batch_id);
         return new ResponseEntity<List<TranDTO>>(tranList, HttpStatus.OK);
-    }
+    }*/
 
 
 }

@@ -5,7 +5,8 @@ import com.hrmstracker.web.account.AccountDTO;
 import lombok.Data;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class BatchDTO {
@@ -15,11 +16,10 @@ public class BatchDTO {
     private String comments;
     private Long statusId;
     private String statusName;
-    private Set<AccountDTO> accounts;
+    private List<AccountDTO> accounts;
     @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss")
     private LocalDateTime createdOn;
     private String createdBy;
-
 
     public BatchDTO(){}
 
@@ -31,12 +31,21 @@ public class BatchDTO {
                 batch.getStatus().getId(),
                 batch.getStatus().getName(),
                 batch.getCreatedOn(),
-                batch.getCreatedBy().getUsername()
+                batch.getCreatedBy().getUsername(),
+                batch.getAccounts().stream().map(account -> {
+                    AccountDTO accountDto = new AccountDTO();
+                    accountDto.setBatchId(account.getBatch().getId());
+                    accountDto.setAccountName(account.getAccountName());
+                    accountDto.setAccountNo(account.getAccountNo());
+                    accountDto.setAccountType(account.getAccountType());
+                    accountDto.setClientCode(account.getClientCode());
+                    return accountDto;
+                }).collect(Collectors.toList())
         );
     }
 
     public BatchDTO(Long id, String name, String comments,Long statusId, String statusName,
-                    LocalDateTime createdOn, String createdBy) {
+                    LocalDateTime createdOn, String createdBy,List<AccountDTO> accounts) {
 
         this.id = id;
         this.name = name;
@@ -45,6 +54,7 @@ public class BatchDTO {
         this.statusName = statusName;
         this.createdOn = createdOn;
         this.createdBy = createdBy;
+        this.accounts = accounts;
 
     }
 }

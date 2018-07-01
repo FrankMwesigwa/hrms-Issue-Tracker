@@ -7,7 +7,7 @@ class BatchDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        batch: {}
+        batch: {accounts:[]}
     };
   } 
 
@@ -33,6 +33,8 @@ class BatchDetails extends Component {
   }
 
   render() {
+    const accountChoices = [];
+
     return (
       <div class="container">
         <div class="panel panel-default">
@@ -58,6 +60,51 @@ class BatchDetails extends Component {
             <Link to={`/edit/${this.state.batch.id}`} class="btn btn-success">Edit</Link>&nbsp;
             <button onClick={this.delete.bind(this, this.state.batch.id)} class="btn btn-danger">Delete</button>
           </div>
+
+          <section class="content container-fluid">
+  <div class="row">
+			<div class="col-md-12">
+				<div class="box">
+					<div class="box-header">
+						<h3 class="box-title">Batch Account Details</h3>
+						<div class="box-tools">
+							<div class="input-group" style={{width:'150px'}}>
+							</div>
+						</div>
+					</div>
+					<div class="box-body table-responsive no-padding">
+						<table class="table table-hover">
+						<thead>
+							<tr>
+							  <th>Batch Id</th>
+							  <th>Account Name</th>
+                <th>Account Number</th>
+                <th>Client Code</th>
+                <th>Account Type</th>
+							</tr>
+							</thead>
+              <tbody> 
+                {this.state.batch.accounts.map(account =>
+                  <tr> 
+                    <td>{account.batchId}</td>
+                    <td>{account.accountName}</td>
+                    <td>{account.accountNo}</td>
+                    <td>{account.clientCode}</td>
+                    <td>{account.accountType}</td>
+                  </tr>
+                )}                      
+              </tbody> 
+              
+						</table>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+  </section>
+
+
         </div>
       </div>
     );
