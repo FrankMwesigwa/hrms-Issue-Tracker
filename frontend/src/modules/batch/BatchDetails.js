@@ -31,7 +31,7 @@ class BatchDetails extends Component {
     console.log(id);
     axios.delete('http://localhost:8005/api/batch/'+id)
       .then((result) => {
-        this.props.history.push("/batches")
+        this.props.history.push("/batch/test")
       });
   }
 

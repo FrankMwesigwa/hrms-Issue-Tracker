@@ -92,6 +92,14 @@ public class BatchController {
         return ResponseEntity.created(location).body(new ApiResponse(true, "Batch created successfully"));
     }
 
+    @DeleteMapping("/batch/{id}")
+    public ResponseEntity<?> deleteBatch(@PathVariable long id) {
+
+        Batch batch = batchRepository.getOne(id);
+        batchRepository.delete(batch);
+        return new ResponseEntity<Batch>(HttpStatus.NO_CONTENT);
+    }
+
 
 }
 
