@@ -9,7 +9,7 @@ class BatchDetails extends Component {
     this.state = {
         batch: {
           accounts:[],
-          trans:[],
+          trans:[]
         }
     };
   } 
@@ -47,15 +47,15 @@ class BatchDetails extends Component {
           <div class="panel-body">
             <h4><Link to="/batch/test"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Batch List</Link></h4>
             <dl>
-              <dt>ISBN:</dt>
+              <dt>BATCH ID:</dt>
               <dd>{this.state.batch.id}</dd>
-              <dt>Author:</dt>
+              <dt>Batch Name:</dt>
               <dd>{this.state.batch.name}</dd>
-              <dt>Description:</dt>
+              <dt>Batch Comments:</dt>
               <dd>{this.state.batch.comments}</dd>
-              <dt>Publish Date:</dt>
+              <dt>Batch Created On:</dt>
               <dd>{this.state.batch.createdOn}</dd>
-              <dt>Publisher:</dt>
+              <dt>Batch Status:</dt>
               <dd>{this.state.batch.statusName}</dd>
             </dl>
             <Link to={`/edit/${this.state.batch.id}`} class="btn btn-success">Edit</Link>&nbsp;
@@ -121,7 +121,9 @@ class BatchDetails extends Component {
 							<tr>
 							  <th>Batch Id</th>
 							  <th>Comments</th>
-                <th>Status Id</th>
+                <th>Status</th>
+                <th>Created On</th>
+                <th>Created By</th>
                 <th>Updated On</th>
                 <th>Updated By</th>
 							</tr>
@@ -131,7 +133,9 @@ class BatchDetails extends Component {
                   <tr> 
                     <td>{tran.batchId}</td>
                     <td>{tran.comments}</td>
-                    <td>{tran.statusId}</td>
+                    <td>{tran.statusName}</td>
+                    <td>{tran.createdOn}</td>
+                    <td>{tran.createdBy}</td>
                     <td>{tran.updatedOn}</td>
                     <td>{tran.updatedBy}</td>
                   </tr>
@@ -145,7 +149,6 @@ class BatchDetails extends Component {
 			</div>
 		</div>
   </section>
-
 
         </div>
       </div>

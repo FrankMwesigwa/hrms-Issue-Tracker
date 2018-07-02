@@ -1,7 +1,6 @@
 package com.hrmstracker.web.tran;
 
 import com.hrmstracker.security.users.User;
-
 import com.hrmstracker.web.status.Status;
 import lombok.Data;
 
@@ -18,6 +17,7 @@ public class Tran {
     private Long id;
 
     private LocalDateTime createdOn;
+    private LocalDateTime updatedOn;
     private String comments;
 
     @Column(name="batch_id")
@@ -30,4 +30,8 @@ public class Tran {
     @ManyToOne
     @JoinColumn(name = "created_By", referencedColumnName = "id")
     private User createdBy;
+
+    @ManyToOne
+    @JoinColumn(name = "updated_By", referencedColumnName = "id")
+    private User updatedBy;
 }

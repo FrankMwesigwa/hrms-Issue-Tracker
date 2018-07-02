@@ -34,7 +34,7 @@ public class BatchDTO {
                 batch.getStatus().getName(),
                 batch.getCreatedOn(),
                 batch.getCreatedBy().getUsername(),
-                /*batch.getAccounts().stream().map(account -> {
+                batch.getAccounts().stream().map(account -> {
                     AccountDTO accountDto = new AccountDTO();
                     accountDto.setBatchId(account.getBatch().getId());
                     accountDto.setAccountName(account.getAccountName());
@@ -42,7 +42,7 @@ public class BatchDTO {
                     accountDto.setAccountType(account.getAccountType());
                     accountDto.setClientCode(account.getClientCode());
                     return accountDto;
-                }).collect(Collectors.toList()),*/
+                }).collect(Collectors.toList()),
                 batch.getTrans().stream().map(tran -> {
                     TranDTO tranDtO = new TranDTO();
                     tranDtO.setBatchId(tran.getBatchId());
@@ -56,7 +56,7 @@ public class BatchDTO {
     }
 
     public BatchDTO(Long id, String name, String comments,Long statusId, String statusName,
-                    LocalDateTime createdOn, String createdBy, List<TranDTO> trans) {
+                    LocalDateTime createdOn, String createdBy, List<AccountDTO> accounts, List<TranDTO> trans) {
 
         this.id = id;
         this.name = name;
@@ -65,6 +65,7 @@ public class BatchDTO {
         this.statusName = statusName;
         this.createdOn = createdOn;
         this.createdBy = createdBy;
+        this.accounts = accounts;
         this.trans = trans;
 
     }

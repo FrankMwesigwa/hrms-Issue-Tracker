@@ -4,11 +4,12 @@ import com.hrmstracker.security.users.User;
 import com.hrmstracker.security.users.UserService;
 import com.hrmstracker.utilities.ApiResponse;
 import com.hrmstracker.web.account.Account;
-import com.hrmstracker.web.account.AccountDTO;
 import com.hrmstracker.web.status.Status;
 import com.hrmstracker.web.status.StatusRepository;
 import com.hrmstracker.web.tran.Tran;
 import com.hrmstracker.web.tran.TranRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,7 +30,7 @@ public class BatchController {
     private UserService userService;
 
     public BatchController(BatchRepository batchRepository, TranRepository tranRepository,
-                           StatusRepository statusRepository,UserService userService) {
+                           StatusRepository statusRepository,UserService userService ) {
         this.batchRepository = batchRepository;
         this.tranRepository = tranRepository;
         this.statusRepository = statusRepository;
@@ -37,9 +38,9 @@ public class BatchController {
     }
 
     @GetMapping("/batch")
-    public ResponseEntity<List<BatchDTO>> getAllBatch() {
-        List<BatchDTO> batchList = batchRepository.findAllBy();
-        return new ResponseEntity<List<BatchDTO>>(batchList, HttpStatus.OK);
+    public ResponseEntity<List<BatchDTO>> getAllBatch(Pageable pageable) {
+        final Page<BatchDTO> page = batchRepository.findAll(pageable).map(BatchDTO::new);
+        return new ResponseEntity<>(page.getContent(), HttpStatus.OK);
     }
 
     @GetMapping("/batch/{id}")
@@ -67,45 +68,16 @@ public class BatchController {
 
         Batch result = batchRepository.save(batch);
 
-        batchDto.getAccounts().forEach(account ->
+        batchDto.getAccounts().forEach(accountDTO ->
         batch.addAccount(new Account(
-                account.getAccountName(),
-                account.getAccountNo(),
-                account.getClientCode(),
-                account.getAccountType()))
+                accountDTO.getAccountName(),
+                accountDTO.getAccountNo(),
+                accountDTO.getClientCode(),
+                accountDTO.getAccountType()))
     );
 
         Tran transactions = new Tran();
 
-        transactions.setBatchId(batch.getId());
-        transactions.setCreatedOn(LocalDateTime.now());
-        //transactions.setStatus(batch.getStatus());
-        transactions.setCreatedBy(currentUser);
-        transactions.setComments(batch.getComments());
-        tranRepository.save(transactions);
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentContextPath().path("/batch")
-                .buildAndExpand(result.getName()).toUri();
-
-        return ResponseEntity.created(location).body(new ApiResponse(true, "Batch created successfully"));
-    }
-
-    @PutMapping("/batch/{id}")
-    public ResponseEntity<?> updateBatch(@PathVariable("id") long id, @RequestBody BatchDTO batchDto) {
-
-        Batch batch = batchRepository.getOne(id);
-        User currentUser = userService.getLoggedUser();
-
-        batch.setName(batchDto.getName());
-        batch.setComments(batchDto.getComments());
-        batch.setStatus(statusRepository.getOne(batchDto.getStatusId()));
-        batch.setCreatedBy(currentUser);
-        batch.setCreatedOn(LocalDateTime.now());
-
-        Batch updatedBatch = batchRepository.save(batch);
-
-        Tran transactions = new Tran();
         transactions.setBatchId(batch.getId());
         transactions.setCreatedOn(LocalDateTime.now());
         transactions.setStatus(batch.getStatus());
@@ -115,17 +87,9 @@ public class BatchController {
 
         URI location = ServletUriComponentsBuilder
                 .fromCurrentContextPath().path("/batch")
-                .buildAndExpand(updatedBatch.getName()).toUri();
+                .buildAndExpand(result.getName()).toUri();
 
-        return ResponseEntity.created(location).body(new ApiResponse(true, "Batch Status Updated successfully"));
-    }
-
-    @DeleteMapping("/batch/{id}")
-    public ResponseEntity<?> deleteBatch(@PathVariable long id) {
-
-        Batch batch = batchRepository.getOne(id);
-        batchRepository.delete(batch);
-        return new ResponseEntity<Batch>(HttpStatus.NO_CONTENT);
+        return ResponseEntity.created(location).body(new ApiResponse(true, "Batch created successfully"));
     }
 
 
