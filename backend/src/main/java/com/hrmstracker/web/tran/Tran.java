@@ -2,6 +2,7 @@ package com.hrmstracker.web.tran;
 
 import com.hrmstracker.security.users.User;
 
+import com.hrmstracker.web.status.Status;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -22,8 +23,9 @@ public class Tran {
     @Column(name="batch_id")
     private Long batchId;
 
-    @Column(name="status_id")
-    private Long statusId;
+    @ManyToOne
+    @JoinColumn(name="status_id", referencedColumnName = "id")
+    private Status status;
 
     @ManyToOne
     @JoinColumn(name = "created_By", referencedColumnName = "id")

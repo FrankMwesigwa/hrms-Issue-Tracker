@@ -7,7 +7,10 @@ class BatchDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        batch: {accounts:[]}
+        batch: {
+          accounts:[],
+          trans:[],
+        }
     };
   } 
 
@@ -33,8 +36,6 @@ class BatchDetails extends Component {
   }
 
   render() {
-    const accountChoices = [];
-
     return (
       <div class="container">
         <div class="panel panel-default">
@@ -44,7 +45,7 @@ class BatchDetails extends Component {
             </h3>
           </div>
           <div class="panel-body">
-            <h4><Link to="/"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Batch List</Link></h4>
+            <h4><Link to="/batch/test"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span> Batch List</Link></h4>
             <dl>
               <dt>ISBN:</dt>
               <dd>{this.state.batch.id}</dd>
@@ -61,7 +62,7 @@ class BatchDetails extends Component {
             <button onClick={this.delete.bind(this, this.state.batch.id)} class="btn btn-danger">Delete</button>
           </div>
 
-          <section class="content container-fluid">
+  <section class="content container-fluid">
   <div class="row">
 			<div class="col-md-12">
 				<div class="box">
@@ -101,7 +102,48 @@ class BatchDetails extends Component {
 				</div>
 			</div>
 		</div>
+  </section>
 
+  <section class="content container-fluid">
+  <div class="row">
+			<div class="col-md-12">
+				<div class="box">
+					<div class="box-header">
+						<h3 class="box-title">Batch Status Details</h3>
+						<div class="box-tools">
+							<div class="input-group" style={{width:'150px'}}>
+							</div>
+						</div>
+					</div>
+					<div class="box-body table-responsive no-padding">
+						<table class="table table-hover">
+						<thead>
+							<tr>
+							  <th>Batch Id</th>
+							  <th>Comments</th>
+                <th>Status Id</th>
+                <th>Updated On</th>
+                <th>Updated By</th>
+							</tr>
+							</thead>
+              <tbody> 
+                {this.state.batch.trans.map(tran =>
+                  <tr> 
+                    <td>{tran.batchId}</td>
+                    <td>{tran.comments}</td>
+                    <td>{tran.statusId}</td>
+                    <td>{tran.updatedOn}</td>
+                    <td>{tran.updatedBy}</td>
+                  </tr>
+                )}                      
+              </tbody> 
+              
+						</table>
+					</div>
+
+				</div>
+			</div>
+		</div>
   </section>
 
 

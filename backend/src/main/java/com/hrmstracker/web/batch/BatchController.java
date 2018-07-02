@@ -4,6 +4,7 @@ import com.hrmstracker.security.users.User;
 import com.hrmstracker.security.users.UserService;
 import com.hrmstracker.utilities.ApiResponse;
 import com.hrmstracker.web.account.Account;
+import com.hrmstracker.web.account.AccountDTO;
 import com.hrmstracker.web.status.Status;
 import com.hrmstracker.web.status.StatusRepository;
 import com.hrmstracker.web.tran.Tran;
@@ -66,19 +67,19 @@ public class BatchController {
 
         Batch result = batchRepository.save(batch);
 
-        batchDto.getAccounts().forEach(accountDTO ->
+        batchDto.getAccounts().forEach(account ->
         batch.addAccount(new Account(
-                accountDTO.getAccountName(),
-                accountDTO.getAccountNo(),
-                accountDTO.getClientCode(),
-                accountDTO.getAccountType()))
+                account.getAccountName(),
+                account.getAccountNo(),
+                account.getClientCode(),
+                account.getAccountType()))
     );
 
         Tran transactions = new Tran();
 
         transactions.setBatchId(batch.getId());
         transactions.setCreatedOn(LocalDateTime.now());
-        transactions.setStatusId(batch.getStatus().getId());
+        //transactions.setStatus(batch.getStatus());
         transactions.setCreatedBy(currentUser);
         transactions.setComments(batch.getComments());
         tranRepository.save(transactions);
@@ -107,7 +108,7 @@ public class BatchController {
         Tran transactions = new Tran();
         transactions.setBatchId(batch.getId());
         transactions.setCreatedOn(LocalDateTime.now());
-        transactions.setStatusId(batch.getStatus().getId());
+        transactions.setStatus(batch.getStatus());
         transactions.setCreatedBy(currentUser);
         transactions.setComments(batch.getComments());
         tranRepository.save(transactions);

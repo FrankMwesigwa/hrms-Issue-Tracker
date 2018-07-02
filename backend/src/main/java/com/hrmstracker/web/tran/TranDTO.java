@@ -25,19 +25,21 @@ public class TranDTO {
                 tran.getId(),
                 tran.getBatchId(),
                 tran.getComments(),
-                tran.getStatusId(),
+                tran.getStatus().getId(),
+                tran.getStatus().getName(),
                 tran.getCreatedOn(),
                 tran.getCreatedBy().getUsername()
         );
     }
 
-    public TranDTO(Long id, Long batchId, String comments,Long statusId,
+    public TranDTO(Long id, Long batchId, String comments,Long statusId,String statusName,
                     LocalDateTime updatedOn, String updatedBy) {
 
         this.id = id;
         this.batchId = batchId;
         this.comments = comments;
         this.statusId = statusId;
+        this.statusName = statusName;
         this.updatedOn = updatedOn;
         this.updatedBy = updatedBy;
 

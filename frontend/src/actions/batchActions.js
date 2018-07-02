@@ -40,7 +40,7 @@ export const addBatch = (values, history) => {
         })
             .then( response => {
                dispatch({type: "ADD_BATCH"})
-               history.push(`${URL}/batches`);
+               history.push(`${URL}/batch/test`);
             } )
             .catch( error => {
                 dispatch({type: "FAILED_BATCH", payload: error})
